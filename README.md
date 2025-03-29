@@ -1,4 +1,3 @@
-# DocumentDB-setup-for-multi-region
 
 # AWS DocumentDB Global Cluster Setup Guide
 
