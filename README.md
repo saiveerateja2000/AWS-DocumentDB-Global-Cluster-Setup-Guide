@@ -120,11 +120,18 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    - Ohio Route Table → Add `10.5.0.0/16 → VPC Peering`
 
 ## **Step 11: Create DocumentDB Global Cluster**
+**Before creating document db cluster create the subnet group under the DocumentDB section** 
+1.Go to the Amazon DocumentDB service in the AWS Console.
+2.In the left-hand navigation pane, click on "Subnet groups".
+3.Click `Create Subnet Group`.
+4.Select all the `Private-subnets of the VPC`
+5.Click Create
+
 1. Navigate to **Amazon DocumentDB**
 2. Click **Global Clusters** → **Create Global Cluster**
 3. Select `svt-docdb-cluster-virginia`
 4. Click **Add Region** → Select `Ohio`
-5. Choose Instance Type and Security Group
+5. Choose Instance Type and Security Group and Subnet Group (from the DocumentDB)
 6. Click **Create Global Cluster**
 
 ## **Step 12: Validate Replication**
