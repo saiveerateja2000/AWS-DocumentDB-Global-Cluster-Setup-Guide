@@ -43,7 +43,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    - **Elastic IP**: Select the Elastic IP allocated above / Allocate Elastic IP
 5. Click **Create NAT Gateway**
 
-## Step 5: Create Route Tables
+## Step 5: Create Route Tables (Be Careful)
 1. Navigate to **Route Tables** in the VPC Console
 2. Click **Create Route Table**
    - **Name**: `svt-public-rt`
