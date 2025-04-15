@@ -31,19 +31,40 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    - Click **Create**
 3. Attach to `svt-vpc-virginia`
 
-## **Step 4: Create Route Tables**
-1. Navigate to **Route Tables**
-2. Click **Create Route Table**
-   - Name: `svt-public-rt`
-   - VPC: `svt-vpc-virginia`
-   - Click **Create**
-3. Select `svt-public-rt` → Click **Edit Routes** → Add:
-   - Destination: `0.0.0.0/0`
-   - Target: `svt-igw-virginia`
-4. Associate **Public Subnets** with `svt-public-rt`
-5. Create a **Private Route Table** for private subnets
+## Step 4: Create NAT Gateway
+1. Navigate to **Elastic IPs** in the VPC Console
+2. Click **Allocate Elastic IP address**
+   - Choose **Amazon pool**
+   - Click **Allocate**
+3. Navigate to **NAT Gateways**
+4. Click **Create NAT Gateway**
+   - **Name**: `svt-nat-gateway-virginia`
+   - **Subnet**: `svt-public-subnet-1`
+   - **Elastic IP**: Select the Elastic IP allocated above
+5. Click **Create NAT Gateway**
 
-## **Step 5: Create Security Groups**
+## Step 5: Create Route Tables
+1. Navigate to **Route Tables** in the VPC Console
+2. Click **Create Route Table**
+   - **Name**: `svt-public-rt`
+   - **VPC**: `svt-vpc-virginia`
+   - Click **Create**
+3. Select the route table `svt-public-rt`, click **Edit routes**, and add:
+   - **Destination**: `0.0.0.0/0`
+   - **Target**: `svt-igw-virginia` (the Internet Gateway)
+4. Click **Save routes**
+5. Associate `svt-public-subnet-1` and `svt-public-subnet-2` with `svt-public-rt`
+6. Click **Create Route Table** again for private subnets
+   - **Name**: `svt-private-rt`
+   - **VPC**: `svt-vpc-virginia`
+   - Click **Create**
+7. Select the route table `svt-private-rt`, click **Edit routes**, and add:
+   - **Destination**: `0.0.0.0/0`
+   - **Target**: `svt-nat-gateway-virginia`
+8. Click **Save routes**
+9. Associate `svt-private-subnet-1` and `svt-private-subnet-2` with `svt-private-rt`
+
+## **Step 6: Create Security Groups**
 1. Navigate to **Security Groups**
 2. Click **Create Security Group**
    - Name: `svt-docdb-sg`
@@ -53,7 +74,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    - Source: Custom (Specify EC2 Security Group or IP)
    - Click **Create**
 
-## **Step 6: Create DocumentDB Cluster in N. Virginia**
+## **Step 7: Create DocumentDB Cluster in N. Virginia**
 1. Navigate to **Amazon DocumentDB**
 2. Click **Create Cluster**
    - Name: `svt-docdb-cluster-virginia`
@@ -64,7 +85,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    - Security Group: `svt-docdb-sg`
    - Click **Create Cluster**
 
-## **Step 7: Create an EC2 Instance in N. Virginia**
+## **Step 8: Create an EC2 Instance in N. Virginia**
 1. Navigate to **EC2** → **Launch Instance**
 2. Name: `svt-ec2-virginia`
 3. AMI: Amazon Linux 2
@@ -75,7 +96,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
 8. Key Pair: Create or select an existing one
 9. Click **Launch Instance**
 
-## **Step 8: Install Mongo Shell on EC2**
+## **Step 9: Install Mongo Shell on EC2**
 1. SSH into the EC2 instance
 2. Run the following commands to install **Mongo shell** :
    ```sh
@@ -100,7 +121,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    mongosh "mongodb://svt-docdb-cluster-virginia.cluster-xyz.us-east-1.docdb.amazonaws.com:27017/" --tls --username admin --password YourPassword
    ```
 
-## **Step 9: Create VPC in Ohio (us-east-2)**
+## **Step 10: Create VPC in Ohio (us-east-2)**
 1. Repeat Steps **1-5** but use CIDR **10.6.0.0/16**
 2. Create:
    - VPC: `svt-vpc-ohio`
@@ -108,7 +129,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    - Internet Gateway: `svt-igw-ohio`
    - Route Tables and Security Groups
 
-## **Step 10: Create VPC Peering Between N. Virginia & Ohio**
+## **Step 11: Create VPC Peering Between N. Virginia & Ohio**
 1. Navigate to **VPC Peering**
 2. Click **Create Peering Connection**
    - Name: `svt-peer-virginia-ohio`
@@ -119,7 +140,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    - Virginia Route Table → Add `10.6.0.0/16 → VPC Peering`
    - Ohio Route Table → Add `10.5.0.0/16 → VPC Peering`
 
-## **Step 11: Create DocumentDB Global Cluster**
+## **Step 12: Create DocumentDB Global Cluster**
 **Before creating document db cluster create the subnet group under the DocumentDB section** 
 1. Go to the Amazon DocumentDB service in the AWS Console.
 2. In the left-hand navigation pane, click on "Subnet groups".
@@ -135,7 +156,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
 5. Choose Instance Type and Security Group and Subnet Group (from the DocumentDB)
 6. Click **Create Global Cluster**
 
-## **Step 12: Validate Replication**
+## **Step 13: Validate Replication**
 1. SSH into **Ohio EC2**
 2. Install MongoDB shell (repeat **Step 8**)
 3. Connect to **Ohio Cluster**:
@@ -152,6 +173,6 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    db.users.find().pretty();
    ```
 
-## **Step 13: Conclusion**
+## **Step 14: Conclusion**
 Your **Amazon DocumentDB Global Cluster** is now set up between **N. Virginia and Ohio** with full replication. 🚀
 
