@@ -60,7 +60,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
    - Instance class: db.r5.large
    - Replica count: 2
    - VPC: `svt-vpc-virginia`
-   - Subnets: **Select private subnets**
+   - Subnets: `**Select private subnets**`
    - Security Group: `svt-docdb-sg`
    - Click **Create Cluster**
 
