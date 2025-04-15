@@ -77,7 +77,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
 
 ## **Step 8: Install Mongo Shell on EC2**
 1. SSH into the EC2 instance
-2. Run the following commands to install **Mongo shell **:
+2. Run the following commands to install **Mongo shell** :
    ```sh
    sudo yum install -y amazon-linux-extras
    sudo amazon-linux-extras enable corretto8
