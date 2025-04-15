@@ -40,7 +40,7 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
 4. Click **Create NAT Gateway**
    - **Name**: `svt-nat-gateway-virginia`
    - **Subnet**: `svt-public-subnet-1`
-   - **Elastic IP**: Select the Elastic IP allocated above
+   - **Elastic IP**: Select the Elastic IP allocated above / Allocate Elastic IP
 5. Click **Create NAT Gateway**
 
 ## Step 5: Create Route Tables
