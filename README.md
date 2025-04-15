@@ -77,13 +77,25 @@ This guide provides a step-by-step process for setting up an Amazon DocumentDB c
 
 ## **Step 8: Install Mongo Shell on EC2**
 1. SSH into the EC2 instance
-2. Run the following commands:
+2. Run the following commands to install **Mongo shell **:
    ```sh
    sudo yum install -y amazon-linux-extras
    sudo amazon-linux-extras enable corretto8
    sudo yum install -y mongodb-mongosh
    ```
-3. Connect to DocumentDB:
+   or
+   ```sh
+   echo "[mongodb-org-7.0]
+   name=MongoDB Repository
+   baseurl=https://repo.mongodb.org/yum/amazon/2023/mongodb-org/7.0/x86_64/
+   gpgcheck=1
+   enabled=1
+   gpgkey=https://pgp.mongodb.com/server-7.0.asc" | sudo tee /etc/yum.repos.d/mongodb-org-7.0.repo
+
+   sudo yum install -y mongodb-mongosh
+   ```
+
+4. Connect to DocumentDB:
    ```sh
    mongosh "mongodb://svt-docdb-cluster-virginia.cluster-xyz.us-east-1.docdb.amazonaws.com:27017/" --tls --username admin --password YourPassword
    ```
